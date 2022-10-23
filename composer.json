@@ -1,0 +1,18 @@
+{
+    "name": "ridwan/mongo-import-export",
+    "description": "MongoDB collection import export",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ridwan\\MongoImportExport\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ridwanul Hafiz",
+            "email": "ridwanul.hafiz@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}

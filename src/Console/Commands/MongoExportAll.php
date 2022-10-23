@@ -1,0 +1,54 @@
+<?php
+
+namespace Rdhafiz\MongoExport\Console\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+
+class MongoExportAll extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'MongoExport:All';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return int
+     */
+    public function handle()
+    {
+        $database = [];
+        if(env('DB_CONNECTION') == 'mongodb'){
+            foreach (DB::connection()->getMongoDB()->listCollections() as $collection) {
+                $database[$collection->getName()] = DB::table('course_apply')->get()->toArray();
+            }
+            if(!file_exists(public_path('mongo-export'))){
+                mkdir(public_path('mongo-export'), 0755);
+            }
+            file_put_contents(public_path('mongo-export/'.env('DB_DATABASE').'-'.date('Y-m-d').'.json'), json_encode($database, true));
+        } else {
+            print_r(PHP_EOL.PHP_EOL."You connection is not MONGODB".PHP_EOL.PHP_EOL);
+        }
+    }
+}
